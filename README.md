@@ -9,11 +9,13 @@ Run the build command then upload `sonitus.zip` into your Lambda function. From 
 
 ## Building
 
-To build with the latest realase of the prebuilt binary run the following:
+To build with the latest release of the prebuilt binary run the following:
 
-`make -e SLACK_URL=http://www.my-slack-url.com`
+`make -e SLACK_URL=http:\/\/www.my-slack-url.com`
+
+> Note: make sure to escape the forward slashes in the URL
 
 If you'd like to build the binary yourself, I'd recommend [gox](https://github.com/mitchellh/gox).
 
 ## Development
-To replicate Lambda, there is a debug folder with a example Alarm message from SNS.  Build a local binary and put the path to that binary into index.js instead of `/var/task/lambda`.  Simply run `node start.js` and it will send a message.
+To replicate Lambda, there is a debug folder with a example Alarm message from SNS.  Build a local binary and put the path to that binary into index.js instead of `/var/task/lambda` (e.g. `./sonitus`).  Simply run `node debug/start.js` and it will send a message.

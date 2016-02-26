@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// Message contains our SNS structure
 type Message struct {
 	EventSource          string
 	EventVersion         string
@@ -27,6 +28,7 @@ type Message struct {
 	UnsubscribeUrl   string
 }
 
+// MessageBody contains our AWS response structure
 type MessageBody struct {
 	AWSAccountId     string `json:"AWSAccountId"`
 	AlarmDescription string `json:"AlarmDescription"`
@@ -59,7 +61,6 @@ type payloadMessage struct {
 }
 
 func main() {
-
 	sns := os.Args[2]
 
 	awsMain := &Message{}
@@ -77,11 +78,9 @@ func main() {
 	}
 
 	alarm(awsBody)
-
 }
 
 func alarm(awsBody *MessageBody) {
-
 	var checkStatus []byte
 
 	alarmState := awsBody.NewStateValue
@@ -98,7 +97,6 @@ func alarm(awsBody *MessageBody) {
 }
 
 func slack(awsBody *MessageBody, alarmState string, colour string) []byte {
-
 	alarmMessageName := &payloadMessage{
 		Short: true,
 		Title: alarmState,
@@ -150,7 +148,6 @@ func slack(awsBody *MessageBody, alarmState string, colour string) []byte {
 	var jsonStr = []byte(fmt.Sprintf("{\"username\": \"CW - %s \",\"attachments\":[{\"fallback\":\"AWS Alert\"},{\"fields\":[ %s, %s, %s, %s],\"color\": \"%s\"}]}", awsBody.AlarmName, messageName, messageLink, messageDesc, messageTime, colour))
 
 	return jsonStr
-
 }
 
 func send(jsonStr []byte) {
@@ -170,5 +167,4 @@ func send(jsonStr []byte) {
 	fmt.Println("response Status:", resp.Status)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println("response Body:", string(body))
-
 }
